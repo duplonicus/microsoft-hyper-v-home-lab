@@ -1,0 +1,10 @@
+# Allowlist: only the public files are tracked. Everything else in this folder (notes, postings, state) stays local.
+/*
+!/.gitignore
+!/.githooks/
+!/README.md
+!/LICENSE
+!/scripts/
+!/screenshots/
+scripts/.claude/
+scripts/remove-m365-copilot.ps1

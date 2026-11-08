@@ -1,0 +1,23 @@
+rem 37 - Partition PC01's blank disk for UEFI. Typed INSIDE PC01 at Windows Setup's command prompt (Shift+F10), inside diskpart,
+rem AFTER "list disk" showed disk 0 = the blank 64 GB disk (disk 1 = Images, 40 GB, holds ref.wim: never clean it).
+rem This is Microsoft's CreatePartitions-UEFI.txt (Learn "Sample scripts", May 2026 version: 300 MB system partition), unchanged.
+rem Same as: diskpart /s 37-pc01-partition-uefi.txt   (rem lines are comments; diskpart ignores them)
+rem Letters: S = System (EFI, FAT32), W = Windows (NTFS), R = Recovery (NTFS). MSR gets no letter. After reboot Windows becomes C:.
+select disk 0
+clean
+convert gpt
+create partition efi size=300
+format quick fs=fat32 label="System"
+assign letter="S"
+create partition msr size=16
+create partition primary
+shrink minimum=500
+format quick fs=ntfs label="Windows"
+assign letter="W"
+create partition primary
+format quick fs=ntfs label="Recovery"
+assign letter="R"
+set id="de94bba4-06d1-4d40-a16a-bfd50179d6ac"
+gpt attributes=0x8000000000000001
+list volume
+exit
